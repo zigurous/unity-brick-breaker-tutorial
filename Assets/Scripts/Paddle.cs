@@ -48,7 +48,7 @@ public class Paddle : MonoBehaviour
 
         if (ball != null)
         {
-            Vector3 paddlePosition = this.transform.position;
+            Vector2 paddlePosition = this.transform.position;
             Vector2 contactPoint = collision.GetContact(0).point;
 
             float offset = paddlePosition.x - contactPoint.x;
