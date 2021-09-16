@@ -37,12 +37,15 @@ public class GameManager : MonoBehaviour
     {
         this.level = level;
 
-        // Load the win scene if you have beaten all of the levels.
-        if (level > NUM_LEVELS) {
-            SceneManager.LoadScene("Winner");
-        } else {
-            SceneManager.LoadScene("Level" + level);
+        if (level > NUM_LEVELS)
+        {
+            // Start over again at level 1 once you have beaten all the levels
+            // You can also load a "Win" scene instead
+            LoadLevel(1);
+            return;
         }
+
+        SceneManager.LoadScene("Level" + level);
     }
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
@@ -68,6 +71,7 @@ public class GameManager : MonoBehaviour
         this.paddle.ResetPaddle();
         this.ball.ResetBall();
 
+        // Resetting the bricks is optional
         // for (int i = 0; i < this.bricks.Length; i++) {
         //     this.bricks[i].ResetBrick();
         // }
@@ -75,8 +79,8 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        // SceneManager.LoadScene("GameOver");
-
+        // Start a new game immediately
+        // You can also load a "GameOver" scene instead
         NewGame();
     }
 
