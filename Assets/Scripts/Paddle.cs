@@ -13,6 +13,17 @@ public class Paddle : MonoBehaviour
         this.rigidbody = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        ResetPaddle();
+    }
+
+    public void ResetPaddle()
+    {
+        this.rigidbody.velocity = Vector2.zero;
+        this.transform.position = new Vector2(0f, this.transform.position.y);
+    }
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {

@@ -127,5 +127,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8a1f3a2b7be337041b9f2c591cc617db, type: 3}
   - {fileID: 21300000, guid: ded5f72da8d54b44d85ace0c5548180d, type: 3}
   - {fileID: 21300000, guid: 5e536f2cc14b65a44b8e9532d24f6c72, type: 3}
-  health: 1
   points: 100
+  unbreakable: 0

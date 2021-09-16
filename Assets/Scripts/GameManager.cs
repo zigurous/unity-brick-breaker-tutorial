@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -6,14 +7,15 @@ public class GameManager : MonoBehaviour
     public Paddle paddle { get; private set; }
     public Brick[] bricks { get; private set; }
 
+    public int level = 1;
     public int score = 0;
     public int lives = 3;
 
     private void Awake()
     {
-        this.ball = FindObjectOfType<Ball>();
-        this.paddle = FindObjectOfType<Paddle>();
-        this.bricks = FindObjectsOfType<Brick>();
+        DontDestroyOnLoad(this.gameObject);
+
+        SceneManager.sceneLoaded += OnLevelLoaded;
     }
 
     private void Start()
@@ -26,39 +28,46 @@ public class GameManager : MonoBehaviour
         this.score = 0;
         this.lives = 3;
 
-        NewRound();
+        LoadLevel(1);
     }
 
-    private void NewRound()
+    private void LoadLevel(int level)
     {
-        // Restore all the bricks
-        for (int i = 0; i < this.bricks.Length; i++) {
-            this.bricks[i].Restore();
-        }
+        this.level = level;
 
-        ResetRound();
+        SceneManager.LoadScene("Level" + level);
     }
 
-    private void ResetRound()
+    private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Reset the paddle
-        this.paddle.rigidbody.velocity = Vector2.zero;
-        this.paddle.transform.position = new Vector2(0f, this.paddle.transform.position.y);
-
-        // Reset the ball
-        this.ball.rigidbody.velocity = Vector2.zero;
-        this.ball.transform.position = Vector2.zero;
-        this.ball.SetRandomTrajectory();
+        this.ball = FindObjectOfType<Ball>();
+        this.paddle = FindObjectOfType<Paddle>();
+        this.bricks = FindObjectsOfType<Brick>();
     }
 
-    private void Miss()
+    private void ResetLevel()
+    {
+        this.paddle.ResetPaddle();
+        this.ball.ResetBall();
+
+        // for (int i = 0; i < this.bricks.Length; i++) {
+        //     this.bricks[i].ResetBrick();
+        // }
+    }
+
+    private void NextLevel()
+    {
+        LoadLevel(this.level + 1);
+    }
+
+    public void Miss()
     {
         this.lives--;
 
         if (this.lives > 0) {
-            Invoke(nameof(ResetRound), 1f);
+            ResetLevel();
         } else {
-            Invoke(nameof(NewGame), 1f);
+            NewGame();
         }
     }
 
@@ -67,7 +76,7 @@ public class GameManager : MonoBehaviour
         this.score += brick.points;
 
         if (Cleared()) {
-            Invoke(nameof(NewRound), 1f);
+            NextLevel();
         }
     }
 
@@ -75,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < this.bricks.Length; i++)
         {
-            if (this.bricks[i].gameObject.activeInHierarchy) {
+            if (this.bricks[i].gameObject.activeInHierarchy && !this.bricks[i].unbreakable) {
                 return false;
             }
         }
