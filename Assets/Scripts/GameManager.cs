@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public Paddle paddle { get; private set; }
     public Brick[] bricks { get; private set; }
 
+    const int NUM_LEVELS = 2;
+
     public int level = 1;
     public int score = 0;
     public int lives = 3;
@@ -35,7 +37,12 @@ public class GameManager : MonoBehaviour
     {
         this.level = level;
 
-        SceneManager.LoadScene("Level" + level);
+        // Load the win scene if you have beaten all of the levels.
+        if (level > NUM_LEVELS) {
+            SceneManager.LoadScene("Winner");
+        } else {
+            SceneManager.LoadScene("Level" + level);
+        }
     }
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
@@ -43,6 +50,17 @@ public class GameManager : MonoBehaviour
         this.ball = FindObjectOfType<Ball>();
         this.paddle = FindObjectOfType<Paddle>();
         this.bricks = FindObjectsOfType<Brick>();
+    }
+
+    public void Miss()
+    {
+        this.lives--;
+
+        if (this.lives > 0) {
+            ResetLevel();
+        } else {
+            GameOver();
+        }
     }
 
     private void ResetLevel()
@@ -55,20 +73,11 @@ public class GameManager : MonoBehaviour
         // }
     }
 
-    private void NextLevel()
+    private void GameOver()
     {
-        LoadLevel(this.level + 1);
-    }
+        // SceneManager.LoadScene("GameOver");
 
-    public void Miss()
-    {
-        this.lives--;
-
-        if (this.lives > 0) {
-            ResetLevel();
-        } else {
-            NewGame();
-        }
+        NewGame();
     }
 
     public void Hit(Brick brick)
@@ -76,7 +85,7 @@ public class GameManager : MonoBehaviour
         this.score += brick.points;
 
         if (Cleared()) {
-            NextLevel();
+            LoadLevel(this.level + 1);
         }
     }
 
