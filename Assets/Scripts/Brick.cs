@@ -21,6 +21,8 @@ public class Brick : MonoBehaviour
 
     public void ResetBrick()
     {
+        this.gameObject.SetActive(true);
+
         if (!this.unbreakable)
         {
             this.health = this.states.Length;
