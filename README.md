@@ -6,4 +6,4 @@
 - **Topics**: Physics, Multiple Levels
 - **Version**: Unity 2019.4 LTS
 - [**Download**](https://github.com/zigurous/unity-brick-breaker-tutorial/archive/refs/heads/main.zip)
-- [**Tutorial Video**](https://www.youtube.com/c/zigurous)
+- [**Tutorial Video**](https://youtu.be/RYG8UExRkhA)
