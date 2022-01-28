@@ -4,7 +4,7 @@
 public class Ball : MonoBehaviour
 {
     public new Rigidbody2D rigidbody { get; private set; }
-    public float speed = 500f;
+    public float speed = 10f;
 
     private void Awake()
     {
@@ -31,6 +31,11 @@ public class Ball : MonoBehaviour
         force.y = -1f;
 
         this.rigidbody.AddForce(force.normalized * this.speed);
+    }
+
+    private void FixedUpdate()
+    {
+        this.rigidbody.velocity = this.rigidbody.velocity.normalized * this.speed;
     }
 
 }
