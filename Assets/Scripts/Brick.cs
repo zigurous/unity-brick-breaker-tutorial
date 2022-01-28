@@ -11,7 +11,7 @@ public class Brick : MonoBehaviour
 
     private void Awake()
     {
-        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -21,27 +21,27 @@ public class Brick : MonoBehaviour
 
     public void ResetBrick()
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
-        if (!this.unbreakable)
+        if (!unbreakable)
         {
-            this.health = this.states.Length;
-            this.spriteRenderer.sprite = this.states[this.health - 1];
+            health = states.Length;
+            spriteRenderer.sprite = states[health - 1];
         }
     }
 
     private void Hit()
     {
-        if (this.unbreakable) {
+        if (unbreakable) {
             return;
         }
 
-        this.health--;
+        health--;
 
-        if (this.health <= 0) {
-            this.gameObject.SetActive(false);
+        if (health <= 0) {
+            gameObject.SetActive(false);
         } else {
-            this.spriteRenderer.sprite = this.states[this.health - 1];
+            spriteRenderer.sprite = states[health - 1];
         }
 
         FindObjectOfType<GameManager>().Hit(this);

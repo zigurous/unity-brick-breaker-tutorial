@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
-        this.rigidbody = GetComponent<Rigidbody2D>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -18,8 +18,8 @@ public class Ball : MonoBehaviour
 
     public void ResetBall()
     {
-        this.rigidbody.velocity = Vector2.zero;
-        this.transform.position = Vector2.zero;
+        rigidbody.velocity = Vector2.zero;
+        transform.position = Vector2.zero;
 
         Invoke(nameof(SetRandomTrajectory), 1f);
     }
@@ -30,12 +30,12 @@ public class Ball : MonoBehaviour
         force.x = Random.Range(-1f, 1f);
         force.y = -1f;
 
-        this.rigidbody.AddForce(force.normalized * this.speed);
+        rigidbody.AddForce(force.normalized * speed);
     }
 
     private void FixedUpdate()
     {
-        this.rigidbody.velocity = this.rigidbody.velocity.normalized * this.speed;
+        rigidbody.velocity = rigidbody.velocity.normalized * speed;
     }
 
 }

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
 
     private void NewGame()
     {
-        this.score = 0;
-        this.lives = 3;
+        score = 0;
+        lives = 3;
 
         LoadLevel(1);
     }
@@ -50,16 +50,16 @@ public class GameManager : MonoBehaviour
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
     {
-        this.ball = FindObjectOfType<Ball>();
-        this.paddle = FindObjectOfType<Paddle>();
-        this.bricks = FindObjectsOfType<Brick>();
+        ball = FindObjectOfType<Ball>();
+        paddle = FindObjectOfType<Paddle>();
+        bricks = FindObjectsOfType<Brick>();
     }
 
     public void Miss()
     {
-        this.lives--;
+        lives--;
 
-        if (this.lives > 0) {
+        if (lives > 0) {
             ResetLevel();
         } else {
             GameOver();
@@ -68,12 +68,12 @@ public class GameManager : MonoBehaviour
 
     private void ResetLevel()
     {
-        this.paddle.ResetPaddle();
-        this.ball.ResetBall();
+        paddle.ResetPaddle();
+        ball.ResetBall();
 
         // Resetting the bricks is optional
-        // for (int i = 0; i < this.bricks.Length; i++) {
-        //     this.bricks[i].ResetBrick();
+        // for (int i = 0; i < bricks.Length; i++) {
+        //     bricks[i].ResetBrick();
         // }
     }
 
@@ -86,18 +86,18 @@ public class GameManager : MonoBehaviour
 
     public void Hit(Brick brick)
     {
-        this.score += brick.points;
+        score += brick.points;
 
         if (Cleared()) {
-            LoadLevel(this.level + 1);
+            LoadLevel(level + 1);
         }
     }
 
     private bool Cleared()
     {
-        for (int i = 0; i < this.bricks.Length; i++)
+        for (int i = 0; i < bricks.Length; i++)
         {
-            if (this.bricks[i].gameObject.activeInHierarchy && !this.bricks[i].unbreakable) {
+            if (bricks[i].gameObject.activeInHierarchy && !bricks[i].unbreakable) {
                 return false;
             }
         }
