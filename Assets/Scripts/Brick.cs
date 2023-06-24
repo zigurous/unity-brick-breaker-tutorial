@@ -44,7 +44,11 @@ public class Brick : MonoBehaviour
             spriteRenderer.sprite = states[health - 1];
         }
 
-        FindObjectOfType<GameManager>().Hit(this);
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager != null) {
+            gameManager.Hit(this);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    const int NUM_LEVELS = 2;
+
     public Ball ball { get; private set; }
     public Paddle paddle { get; private set; }
     public Brick[] bricks { get; private set; }
-
-    const int NUM_LEVELS = 2;
 
     public int level = 1;
     public int score = 0;
