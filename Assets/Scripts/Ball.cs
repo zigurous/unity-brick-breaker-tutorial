@@ -30,7 +30,7 @@ public class Ball : MonoBehaviour
         force.x = Random.Range(-1f, 1f);
         force.y = -1f;
 
-        rigidbody.AddForce(force.normalized * speed);
+        rigidbody.AddForce(force.normalized * speed, ForceMode2D.Impulse);
     }
 
     private void FixedUpdate()
