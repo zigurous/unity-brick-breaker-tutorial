@@ -3,34 +3,57 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    const int NUM_LEVELS = 2;
+    private static GameManager m_Instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = FindObjectOfType<GameManager>();
+                if (m_Instance == null)
+                {
+                    GameObject go = new GameObject("Game Manager");
+                    m_Instance = go.AddComponent<GameManager>();
+                }
+            }
+            return m_Instance;
+        }
+    }
 
-    public Ball ball { get; private set; }
-    public Paddle paddle { get; private set; }
-    public Brick[] bricks { get; private set; }
+    private const int NUM_LEVELS = 2;
 
-    public int level = 1;
-    public int score = 0;
-    public int lives = 3;
+    private Ball ball;
+    private Paddle paddle;
+    private Brick[] bricks;
+
+    private int level = 1;
+    private int score = 0;
+    private int lives = 3;
+
+    public int Level => level;
+    public int Score => score;
+    public int Lives => lives;
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (m_Instance != null)
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
 
+        m_Instance = this;
+        DontDestroyOnLoad(gameObject);
+        FindSceneReferences();
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
 
-    private void Start()
+    private void FindSceneReferences()
     {
-        NewGame();
-    }
-
-    private void NewGame()
-    {
-        score = 0;
-        lives = 3;
-
-        LoadLevel(1);
+        ball = FindObjectOfType<Ball>();
+        paddle = FindObjectOfType<Paddle>();
+        bricks = FindObjectsOfType<Brick>();
     }
 
     private void LoadLevel(int level)
@@ -50,12 +73,10 @@ public class GameManager : MonoBehaviour
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
     {
-        ball = FindObjectOfType<Ball>();
-        paddle = FindObjectOfType<Paddle>();
-        bricks = FindObjectsOfType<Brick>();
+        FindSceneReferences();
     }
 
-    public void Miss()
+    public void OnBallMiss()
     {
         lives--;
 
@@ -70,11 +91,6 @@ public class GameManager : MonoBehaviour
     {
         paddle.ResetPaddle();
         ball.ResetBall();
-
-        // Resetting the bricks is optional
-        // for (int i = 0; i < bricks.Length; i++) {
-        //     bricks[i].ResetBrick();
-        // }
     }
 
     private void GameOver()
@@ -84,7 +100,15 @@ public class GameManager : MonoBehaviour
         NewGame();
     }
 
-    public void Hit(Brick brick)
+    private void NewGame()
+    {
+        score = 0;
+        lives = 3;
+
+        LoadLevel(1);
+    }
+
+    public void OnBrickHit(Brick brick)
     {
         score += brick.points;
 

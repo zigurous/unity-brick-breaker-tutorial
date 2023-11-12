@@ -3,12 +3,12 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
-    public new Rigidbody2D rigidbody { get; private set; }
+    private Rigidbody2D rb;
     public float speed = 10f;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -18,9 +18,10 @@ public class Ball : MonoBehaviour
 
     public void ResetBall()
     {
-        rigidbody.velocity = Vector2.zero;
+        rb.velocity = Vector2.zero;
         transform.position = Vector2.zero;
 
+        CancelInvoke();
         Invoke(nameof(SetRandomTrajectory), 1f);
     }
 
@@ -30,12 +31,12 @@ public class Ball : MonoBehaviour
         force.x = Random.Range(-1f, 1f);
         force.y = -1f;
 
-        rigidbody.AddForce(force.normalized * speed, ForceMode2D.Impulse);
+        rb.AddForce(force.normalized * speed, ForceMode2D.Impulse);
     }
 
     private void FixedUpdate()
     {
-        rigidbody.velocity = rigidbody.velocity.normalized * speed;
+        rb.velocity = rb.velocity.normalized * speed;
     }
 
 }

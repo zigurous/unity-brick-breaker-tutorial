@@ -3,11 +3,12 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class Brick : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer { get; private set; }
     public Sprite[] states = new Sprite[0];
-    public int health { get; private set; }
     public int points = 100;
     public bool unbreakable;
+
+    private SpriteRenderer spriteRenderer;
+    private int health;
 
     private void Awake()
     {
@@ -44,11 +45,7 @@ public class Brick : MonoBehaviour
             spriteRenderer.sprite = states[health - 1];
         }
 
-        GameManager gameManager = FindObjectOfType<GameManager>();
-
-        if (gameManager != null) {
-            gameManager.Hit(this);
-        }
+        GameManager.Instance.OnBrickHit(this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -3,15 +3,15 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class Paddle : MonoBehaviour
 {
-    public new Rigidbody2D rigidbody { get; private set; }
-    public Vector2 direction { get; private set; }
+    private Rigidbody2D rb;
+    private Vector2 direction;
 
     public float speed = 30f;
     public float maxBounceAngle = 75f;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -21,7 +21,7 @@ public class Paddle : MonoBehaviour
 
     public void ResetPaddle()
     {
-        rigidbody.velocity = Vector2.zero;
+        rb.velocity = Vector2.zero;
         transform.position = new Vector2(0f, transform.position.y);
     }
 
@@ -39,7 +39,7 @@ public class Paddle : MonoBehaviour
     private void FixedUpdate()
     {
         if (direction != Vector2.zero) {
-            rigidbody.AddForce(direction * speed);
+            rb.AddForce(direction * speed);
         }
     }
 
