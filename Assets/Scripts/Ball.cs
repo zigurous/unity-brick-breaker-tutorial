@@ -27,7 +27,7 @@ public class Ball : MonoBehaviour
 
     private void SetRandomTrajectory()
     {
-        Vector2 force = new Vector2();
+        Vector2 force = new();
         force.x = Random.Range(-1f, 1f);
         force.y = -1f;
 
