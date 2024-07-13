@@ -27,10 +27,7 @@ public class Ball : MonoBehaviour
 
     private void SetRandomTrajectory()
     {
-        Vector2 force = new();
-        force.x = Random.Range(-1f, 1f);
-        force.y = -1f;
-
+        Vector2 force = new Vector2(Random.Range(-1f, 1f), -1f);
         rb.AddForce(force.normalized * speed, ForceMode2D.Impulse);
     }
 
