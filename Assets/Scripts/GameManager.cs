@@ -3,23 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager m_Instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (m_Instance == null)
-            {
-                m_Instance = FindObjectOfType<GameManager>();
-                if (m_Instance == null)
-                {
-                    GameObject go = new GameObject("Game Manager");
-                    m_Instance = go.AddComponent<GameManager>();
-                }
-            }
-            return m_Instance;
-        }
-    }
+    public static GameManager Instance { get; private set; }
 
     private const int NUM_LEVELS = 2;
 
@@ -33,16 +17,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (m_Instance != null)
-        {
+        if (Instance != null) {
             DestroyImmediate(gameObject);
-            return;
+        } else {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            FindSceneReferences();
         }
+    }
 
-        m_Instance = this;
-        DontDestroyOnLoad(gameObject);
-        FindSceneReferences();
-        SceneManager.sceneLoaded += OnLevelLoaded;
+    private void OnDestroy()
+    {
+        if (Instance == this) {
+            Instance = null;
+        }
     }
 
     private void FindSceneReferences()
@@ -64,11 +52,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene("Level" + level);
+        SceneManager.sceneLoaded += OnLevelLoaded;
+        SceneManager.LoadScene($"Level{level}");
     }
 
     private void OnLevelLoaded(Scene scene, LoadSceneMode mode)
     {
+        SceneManager.sceneLoaded -= OnLevelLoaded;
         FindSceneReferences();
     }
 
