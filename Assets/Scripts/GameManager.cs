@@ -27,13 +27,9 @@ public class GameManager : MonoBehaviour
     private Paddle paddle;
     private Brick[] bricks;
 
-    private int level = 1;
-    private int score = 0;
-    private int lives = 3;
-
-    public int Level => level;
-    public int Score => score;
-    public int Lives => lives;
+    public int level { get; private set; } = 1;
+    public int score { get; private set; } = 0;
+    public int lives { get; private set; } = 3;
 
     private void Awake()
     {
